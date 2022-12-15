@@ -1,0 +1,24 @@
+strategy: token-bucket # token-bucket | sliding
+in-memory: false
+rules:
+  - name: ip based filter for any request
+    type: ip-address
+    ipaddress: '*'
+    bucket-size: '10000'
+    refill-rate: '2'
+  - name: specific ip will not be allowed to make any request
+    type: ip-address
+    ipaddress: 127.0.0.1
+    bucket-size: '100'
+    refill-rate: '2'
+  - name: authenticated user request rate-limit filter
+    type: request-header
+    header: Authorization
+    bucket-size: '10'
+    refill-rate: '1'
+  - name: individual user can add 20 followers per hour
+    type: request-url-regex,request-header
+    urlRegex: '/api/users/(\d+)/follow'
+    header: Authorization
+    bucket-size: '10'
+    refill-rate: '1'

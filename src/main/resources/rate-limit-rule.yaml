@@ -1,0 +1,24 @@
+strategy: sliding # token-bucket | sliding
+in-memory: true
+rules:
+  - name: ip based filter for any request
+    type: ip-address
+    ipaddress: '*'
+    windowPeriodInSecs: '900'
+    maxRequests: '20000'
+  - name: specific ip will not be allowed to make any request
+    type: ip-address
+    ipaddress: 127.0.0.1
+    windowPeriodInSecs: '10'
+    maxRequests: '0'
+  - name: authenticated user request rate-limit filter
+    type: request-header
+    header: Authorization
+    windowPeriodInSecs: '600'
+    maxRequests: '100'
+  - name: individual user can add 20 followers per hour
+    type: request-url-regex,request-header
+    urlRegex: '/api/users/(\d+)/follow'
+    header: Authorization
+    windowPeriodInSecs: '600'
+    maxRequests: '20'
