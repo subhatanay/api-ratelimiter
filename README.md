@@ -2,7 +2,7 @@
 
 ## Description
 A Distributed API-RateLimiter Java library that helps to throttle http requests based on defined rules. Easily integratable to any Java EE based or Springboot based application.
-Supports both InMemeory and Redis based caching for creating buckets for each type of request. Currentry supports Token bucket and Sliding Windowlog based ratelimiting strategy. 
+Supports both InMemeory and Redis based caching for creating buckets for each type of request. Currently supports Token bucket and Sliding Windowlog based ratelimiting strategy. 
 
 ## Class Diagram
 ![image](https://user-images.githubusercontent.com/22850961/208228133-ab93b178-4803-4f6c-afa8-8218779189e8.png)
@@ -11,10 +11,12 @@ Supports both InMemeory and Redis based caching for creating buckets for each ty
 ![image](https://user-images.githubusercontent.com/22850961/208235701-3a083753-48be-4271-a80b-535c375f4154.png)
 
 ## Documentation
-Supports two types of ratelimiting strategy. Token Bucket and Sliding Window Log.
-Supports in-memeory based and redis based.
-Supports configuring different rules in yaml file based on application need. Default file rate-limit-rule.yaml.
-Supports auto reload of the config file when the application is running.
+1. Supports two types of ratelimiting strategy. Token Bucket and Sliding Window Log.
+2. Supports in-memeory based and redis based.
+3. Supports configuring different rules in yaml file based on application need. Default file rate-limit-rule.yaml.
+4. Supports auto reload of the config file when the application is running.
+5. While running in In-Memeory setup, rate limiting filter keys will be created in application memory in memory for tracking each request usage.
+6. While running in Redis based setup, rate limiting filter keys will be created in REDIS system, this feature can be used for Loadbalancers or appservers with multiple nodes which can connect to shared redis system for the distributed ratelimiting.
 
 Rate limiting rule YAML configuartion details :: 
 | Key | Value   | Description   |
@@ -30,9 +32,9 @@ Rate limiting rule YAML configuartion details ::
 | rules[i].refill-rate | <Number>   | when strategy= token-bucket , refill rate of the bucket per secs | 
 
 For each rule type seperate keys needs to be included in the config file. Below is the details ::
-For type = ip-address -> ipaddress (Mandatory)
-For type = request-header -> header (Mandatory)
-For type = request-url-regex -> urlRegex (Mandatory) , pathparamindex (Optional)
+1. For type = ip-address -> ipaddress (Mandatory)
+2. For type = request-header -> header (Mandatory)
+3. For type = request-url-regex -> urlRegex (Mandatory) , pathparamindex (Optional)
 
 
 ## Setup Guide
