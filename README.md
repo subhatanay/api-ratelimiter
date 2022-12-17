@@ -23,6 +23,9 @@ Rate limiting rule YAML configuartion details ::
 | :---:   | :---: | :---: |
 | strategy | sliding or token-bucket   | Rate limiting algorithm to be use for request throttle   |
 | in-memory | true or false   | true - In-memory based , false - Redis based   |
+| in-memory | true or false   | true - In-memory based , false - Redis based   |
+| redis.ip |    | Redis ip address   |
+| redis.port |    | Redis port    |
 | rules.name |    | Array of rules for request   |
 | rules[i].name | <name of the rule name>   | Name of rule  |
 | rules[i].type | ip-address or request-address or request-url-regex   | Rule type  |
