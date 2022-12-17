@@ -1,10 +1,8 @@
-# API-RateLimiter
+# API-RateLimiter Library
 
 ## Description
 A Distributed API-RateLimiter Java library that helps to throttle http requests based on defined rules. Easily integratable to any Java EE based or Springboot based application.
-Supports both InMemeory and Redis based caching for creating buckets for each type of request. Currentry supports Token bucket and Sliding Windowlog based ratelimiting strategy.
-
-## MVP
+Supports both InMemeory and Redis based caching for creating buckets for each type of request. Currentry supports Token bucket and Sliding Windowlog based ratelimiting strategy. 
 
 ## Class Diagram
 ![image](https://user-images.githubusercontent.com/22850961/208228133-ab93b178-4803-4f6c-afa8-8218779189e8.png)
@@ -13,6 +11,29 @@ Supports both InMemeory and Redis based caching for creating buckets for each ty
 ![image](https://user-images.githubusercontent.com/22850961/208235701-3a083753-48be-4271-a80b-535c375f4154.png)
 
 ## Documentation
+Supports two types of ratelimiting strategy. Token Bucket and Sliding Window Log.
+Supports in-memeory based and redis based.
+Supports configuring different rules in yaml file based on application need. Default file rate-limit-rule.yaml.
+Supports auto reload of the config file when the application is running.
+
+Rate limiting rule YAML configuartion details :: 
+| Key | Value   | Description   |
+| :---:   | :---: | :---: |
+| strategy | sliding or token-bucket   | Rate limiting algorithm to be use for request throttle   |
+| in-memory | true or false   | true - In-memory based , false - Redis based   |
+| rules.name |    | Array of rules for request   |
+| rules[i].name | <name of the rule name>   | Name of rule  |
+| rules[i].type | ip-address or request-address or request-url-regex   | Rule type  |
+| rules[i].windowPeriodInSecs | <Number>   | when strategy= sliding , Request allowed window period in Secs |
+| rules[i].maxRequests | <Number>   | when strategy= sliding , Max request allowed in the window |
+| rules[i].bucket-size | <Number>   | when strategy= token-bucket , token bucket capacity |
+| rules[i].refill-rate | <Number>   | when strategy= token-bucket , refill rate of the bucket per secs | 
+
+For each rule type seperate keys needs to be included in the config file. Below is the details ::
+For type = ip-address -> ipaddress (Mandatory)
+For type = request-header -> header (Mandatory)
+For type = request-url-regex -> urlRegex (Mandatory) , pathparamindex (Optional)
+
 
 ## Setup Guide
 
@@ -66,7 +87,7 @@ rules:
 ```
 Above file is a sample for ratelimiting rule, rules needs to be changed based on applications usage.
 #### Library Usage :: 
-##### Ratelimter Initalization : 
+##### Ratelimter Initalization with in-memory ratelimiting : 
 ```java
 ConfigLoader configLoader = new RuleYAMLConfigLoader();
 RuleConfigParser configParser = new RuleConfigParser(configLoader);
