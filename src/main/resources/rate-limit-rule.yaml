@@ -1,5 +1,8 @@
 strategy: sliding # token-bucket | sliding
-in-memory: true
+in-memory: false
+redis:
+  ip: localhost
+  port: 6348
 rules:
   - name: ip based filter for any request
     type: ip-address

@@ -14,11 +14,11 @@ public class RedisConnectionFactory {
 
     private static Jedis jedis;
 
-    public static Jedis getRedisClient() {
+    public static Jedis getRedisClient(String ip, String port) {
         if (jedis == null) {
             synchronized (RedisConnectionFactory.class) {
                 if (jedis == null) {
-                    JedisPool jedisPool = new JedisPool(buildPoolConfig(),"localhost");
+                    JedisPool jedisPool = new JedisPool(buildPoolConfig(),ip, Integer.parseInt(port));
                     jedis = jedisPool.getResource();
                     logger.info("Successfully connected to Redis cluster");
                 }

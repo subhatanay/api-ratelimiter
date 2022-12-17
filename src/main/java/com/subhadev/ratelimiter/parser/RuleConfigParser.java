@@ -29,8 +29,19 @@ public class RuleConfigParser {
     public synchronized RateLimitingRulesInfo parseConfig() {
         Map<String,Object> rulesConfig = this.configLoader.getRulesContent();
 
+        String redisIp = null;
+        String redisPort = null;
         String rateLimitStrategy = (String) rulesConfig.get("strategy");
         Boolean inMemory = (Boolean) rulesConfig.get("in-memory");
+        if (!inMemory) {
+           if (rulesConfig.containsKey("redis")) {
+               Map<String,Object> redisConfig = (Map<String, Object>) rulesConfig.get("redis");
+               redisIp = (String) redisConfig.getOrDefault("ip","localhost");
+               redisPort = (String) redisConfig.getOrDefault("port","6348");
+           } else {
+               throw new IllegalArgumentException("redis key should be defined in the rules config file");
+           }
+        }
         List<Map<String,String>> rateLimitingRules = (List<Map<String, String>>) rulesConfig.get("rules");
 
         logger.debug("Loaded strategy {0} , im-memory {1}", rateLimitStrategy, inMemory);
@@ -51,6 +62,8 @@ public class RuleConfigParser {
                 .rules(ruleTypes)
                 .isMemory(inMemory)
                 .strategy(rateLimitStrategy)
+                .redisPort(redisPort)
+                .redisIp(redisIp)
                 .build();
     }
 

@@ -16,4 +16,6 @@ public class RateLimitingRulesInfo {
     private List<RuleType> rules;
     private String strategy;
     private boolean isMemory;
+    private String redisIp;
+    private String redisPort;
 }

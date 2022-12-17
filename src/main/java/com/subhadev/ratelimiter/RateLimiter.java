@@ -21,7 +21,7 @@ public class RateLimiter {
     private RateLimitingStrategy rateLimitingStrategy;
     public RateLimiter(RuleManager ruleManager) throws URISyntaxException, IOException {
         this.ruleManager = ruleManager;
-        this.rateLimitingStrategy = StrategyResolver.getRateLimitingStrategy(this.getRuleManager().getRateLimitingRulesInfo().getStrategy(),this.getRuleManager().getRateLimitingRulesInfo().isMemory());
+        this.rateLimitingStrategy = StrategyResolver.getRateLimitingStrategy(this.getRuleManager().getRateLimitingRulesInfo());
         logger.info("Rate limiter initialized successfully");
     }
 
